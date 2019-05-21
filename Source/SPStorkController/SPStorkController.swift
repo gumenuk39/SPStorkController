@@ -58,6 +58,41 @@ public struct SPStorkController {
         }
     }
     
+    static public func scrollViewDidScrollInParent(_ scrollView: UIScrollView) {
+        if let controller = self.controller(for: scrollView) {
+            if let presentationController = controller.parent?.presentationController as? SPStorkPresentationController {
+                let translation = -(scrollView.contentOffset.y + scrollView.contentInset.top)
+                if translation >= 0 {
+                    if controller.isBeingPresented { return }
+                    scrollView.subviews.forEach {
+                        $0.transform = CGAffineTransform(translationX: 0, y: -translation)
+                    }
+                    presentationController.setIndicator(style: scrollView.isTracking ? .line : .arrow)
+                    if translation >= presentationController.translateForDismiss * 0.4 {
+                        if !scrollView.isTracking && !scrollView.isDragging {
+                            presentationController.presentedViewController.dismiss(animated: true, completion: {
+                                presentationController.storkDelegate?.didDismissStorkBySwipe?()
+                            })
+                            return
+                        }
+                    }
+                    if presentationController.pan?.state != UIGestureRecognizer.State.changed {
+                        presentationController.scrollViewDidScroll(translation * 2)
+                    }
+                } else {
+                    presentationController.setIndicator(style: .arrow)
+                    presentationController.scrollViewDidScroll(0)
+                }
+                
+                if translation < -5 {
+                    presentationController.setIndicator(visible: false, forse: (translation < -50))
+                } else {
+                    presentationController.setIndicator(visible: true, forse: false)
+                }
+            }
+        }
+    }
+    
     static public var topScrollIndicatorInset: CGFloat {
         return 6
     }
