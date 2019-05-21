@@ -58,9 +58,9 @@ public struct SPStorkController {
         }
     }
     
-    static public func scrollViewDidScrollInParent(_ scrollView: UIScrollView) {
+    static public func scrollViewDidScrollInPage(_ scrollView: UIScrollView) {
         if let controller = self.controller(for: scrollView) {
-            if let presentationController = controller.parent?.presentationController as? SPStorkPresentationController {
+            if let presentationController = controller.parent?.parent?.presentationController as? SPStorkPresentationController {
                 let translation = -(scrollView.contentOffset.y + scrollView.contentInset.top)
                 if translation >= 0 {
                     if controller.isBeingPresented { return }
