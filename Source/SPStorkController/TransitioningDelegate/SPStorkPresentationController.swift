@@ -32,6 +32,7 @@ class SPStorkPresentationController: UIPresentationController, UIGestureRecogniz
     var customHeight: CGFloat? = nil
     var translateForDismiss: CGFloat = 200
     var hapticMoments: [SPStorkHapticMoments] = [.willDismissIfRelease]
+    var dismissVelocity: CGFloat = 1000
     
     var transitioningDelegate: SPStorkTransitioningDelegate?
     weak var storkDelegate: SPStorkControllerDelegate?
@@ -329,7 +330,8 @@ extension SPStorkPresentationController {
         case .ended:
             self.workGester = false
             let translation = gestureRecognizer.translation(in: presentedView).y
-            if translation >= self.translateForDismiss {
+            let velocity = gestureRecognizer.velocity(in: presentedView).y
+            if translation >= self.translateForDismiss || velocity >= self.dismissVelocity {
                 self.presentedViewController.dismiss(animated: true, completion: {
                     self.storkDelegate?.didDismissStorkBySwipe?()
                 })
