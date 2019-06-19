@@ -58,7 +58,7 @@ public struct SPStorkController {
         }
     }
     
-    static private func presentationController(in viewController: UIViewController?) -> SPStorkPresentationController?  {
+    static public func presentationController(in viewController: UIViewController?) -> SPStorkPresentationController?  {
         guard let parentViewController = viewController?.parent else {
             return viewController?.presentationController as? SPStorkPresentationController
         }
