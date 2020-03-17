@@ -33,6 +33,7 @@ public class SPStorkPresentationController: UIPresentationController, UIGestureR
     var translateForDismiss: CGFloat = 200
     var hapticMoments: [SPStorkHapticMoments] = [.willDismissIfRelease]
     var dismissVelocity: CGFloat = 1000
+    var fullScreen: Bool = false
     
     var transitioningDelegate: SPStorkTransitioningDelegate?
     weak var storkDelegate: SPStorkControllerDelegate?
@@ -85,7 +86,9 @@ public class SPStorkPresentationController: UIPresentationController, UIGestureR
         let maxHeight: CGFloat = containerView.bounds.height - baseY
         var height: CGFloat = maxHeight
         
-        if let customHeight = self.customHeight {
+        if fullScreen {
+            height = containerView.bounds.height
+        } else if let customHeight = self.customHeight {
             if customHeight < maxHeight {
                 height = customHeight
             } else {
