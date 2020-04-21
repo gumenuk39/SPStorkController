@@ -35,6 +35,7 @@ public final class SPStorkTransitioningDelegate: NSObject, UIViewControllerTrans
     public var hapticMoments: [SPStorkHapticMoments] = [.willDismissIfRelease]
     public var dismissVelocity: CGFloat = 1000
     public var fullScreen: Bool = false
+    public var shouldVerifyHeight: Bool = false
     public weak var storkDelegate: SPStorkControllerDelegate? = nil
     
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -53,6 +54,7 @@ public final class SPStorkTransitioningDelegate: NSObject, UIViewControllerTrans
         controller.transitioningDelegate = self
         controller.storkDelegate = self.storkDelegate
         controller.fullScreen = self.fullScreen
+        controller.shouldVerifyHeight = self.shouldVerifyHeight
         return controller
     }
     

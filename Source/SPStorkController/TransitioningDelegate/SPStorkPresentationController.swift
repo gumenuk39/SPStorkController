@@ -34,6 +34,7 @@ public class SPStorkPresentationController: UIPresentationController, UIGestureR
     var hapticMoments: [SPStorkHapticMoments] = [.willDismissIfRelease]
     var dismissVelocity: CGFloat = 1000
     var fullScreen: Bool = false
+    var shouldVerifyHeight: Bool = true
     
     var transitioningDelegate: SPStorkTransitioningDelegate?
     weak var storkDelegate: SPStorkControllerDelegate?
@@ -89,7 +90,7 @@ public class SPStorkPresentationController: UIPresentationController, UIGestureR
         if fullScreen {
             height = containerView.bounds.height
         } else if let customHeight = self.customHeight {
-            if customHeight < maxHeight {
+            if customHeight < maxHeight || !shouldVerifyHeight {
                 height = customHeight
             } else {
                 print("SPStorkController - Custom height change to default value. Your height more maximum value")
